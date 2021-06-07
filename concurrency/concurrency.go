@@ -2,12 +2,9 @@ package main
 
 import (
 	"fmt"
-	"sync"
 )
 
 func main() {
-
-	var wg sync.WaitGroup
 
 	jobs := make(chan int, 40)
 	results := make(chan int, 40)
@@ -18,25 +15,18 @@ func main() {
 	close(jobs)
 
 	for i := 0; i < 4; i++ {
-		wg.Add(1)
-		go func(jobs <-chan int, results chan<- int) {
-			defer wg.Done()
-			for j := range jobs {
-				r := worker(j)
-				results <- r
-			}
-		}(jobs, results)
+		go worker(jobs, results)
 	}
 
 	for i := 0; i < 40; i++ {
 		fmt.Println(<-results)
 	}
-
-	wg.Wait()
 }
 
-func worker(i int) int {
-	return fib(i)
+func worker(jobs <-chan int, results chan<- int) {
+	for n := range jobs {
+		results <- fib(n)
+	}
 }
 
 func fib(n int) int {
