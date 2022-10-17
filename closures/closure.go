@@ -31,9 +31,9 @@ func appendTag() func(string) string {
 func main() {
 
 	tagAppender := appendTag()
-	fmt.Println(tagAppender("SFROLE=XP"))
-	tagAppender("SFDEPLOYMENTGROUP=prod")
-	fmt.Println(tagAppender("SFCLOUD=aws"))
+	fmt.Println(tagAppender("ROLE=workernode"))
+	tagAppender("ENV=prod")
+	fmt.Println(tagAppender("CLOUD=aws"))
 
 	/*
 		  //annonymous function
